@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exam</title>
+</head>
+<body>
+<h2>MCQ Examination</h2>
+Time left: <span id="timer">60</span> seconds
+<br><br>
+
+<div id="q"></div>
+<br>
+<button onclick="submitExam()">Submit</button>
+
+<script>
+const questions = [
+  {q:"Capital of India?", a:["Delhi","Mumbai","Chennai","Kolkata"], correct:0},
+  {q:"5+5=?", a:["8","9","10","11"], correct:2},
+  {q:"HTML stands for?", a:["Hyper Text Markup Language","Hyper Text Machine Language","High Text Marking Language","None"], correct:0}
+];
+
+let answers = [];
+let html="";
+
+questions.forEach((item,i)=>{
+    html += "<b>"+item.q+"</b><br>";
+    for(let j=0;j<4;j++){
+        html += `<input type='radio' name='q${i}' value='${j}'> ${item.a[j]}<br>`;
+    }
+    html+="<br>";
+});
+document.getElementById("q").innerHTML=html;
+
+let t=60;
+let x=setInterval(()=>{
+    t--;
+    document.getElementById("timer").innerText=t;
+    if(t<=0){
+        clearInterval(x);
+        submitExam();
+    }
+},1000);
+
+function submitExam(){
+    let score=0;
+    questions.forEach((item,i)=>{
+        let v=document.querySelector(`input[name='q${i}']:checked`);
+        if(v && v.value==item.correct) score++;
+    });
+    sessionStorage.setItem("score",score);
+    location.href="result.html";
+}
+</script>
+</body>
+</html>
